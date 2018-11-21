@@ -7,6 +7,7 @@
 //
 
 #import "AppDelegate.h"
+#import "ViewController.h"
 
 @interface AppDelegate ()
 
@@ -16,6 +17,11 @@
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    ViewController * vc = [storyboard instantiateViewControllerWithIdentifier:@"ViewController"];
+    UINavigationController * nvc = [[UINavigationController alloc]initWithRootViewController:vc];
+    [nvc setNavigationBarHidden:YES];
+    _window.rootViewController = nvc;
     // Override point for customization after application launch.
     return YES;
 }
