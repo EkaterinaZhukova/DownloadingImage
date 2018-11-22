@@ -8,8 +8,10 @@
 
 #import "ResultViewController.h"
 #import "Masonry.h"
+#import "HistoryManager.h"
+#define tableViewReusableCell @"tableViewCell"
 @interface ResultViewController ()
-
+@property(nonatomic,assign)NSArray* arr;
 @end
 
 @implementation ResultViewController
@@ -17,14 +19,20 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     __weak typeof(self)weakSelf = self;
+    HistoryManager* manager = HistoryManager.shared;
+    self.arr = manager.result[self.index];
+    
     [self.view setBackgroundColor:UIColor.whiteColor];
+    
     UIButton *closeButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [closeButton setTitleColor:UIColor.blueColor forState:UIControlStateNormal];
     [closeButton setTitle:@"Close" forState:UIControlStateNormal];
     [closeButton addTarget:self action:@selector(closeView) forControlEvents:UIControlEventTouchDown];
     
     UITableView* tableView = [[UITableView alloc]init];
-    tableView.backgroundColor = UIColor.redColor;
+    [tableView registerClass:[UITableViewCell self] forCellReuseIdentifier:tableViewReusableCell];
+    tableView.dataSource = self;
+    
     [self.view addSubview:closeButton];
     [self.view addSubview:tableView];
     
@@ -34,6 +42,7 @@
         make.width.equalTo(@100);
         make.height.equalTo(@50);
     }];
+    
     [tableView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(closeButton.mas_bottom);
         make.left.equalTo(weakSelf.view.mas_left);
@@ -47,4 +56,20 @@
 - (void)dealloc{
     NSLog(@"Dealloc ResultViewCOntroller");
 }
+@end
+@interface ResultViewController(AddTableViewDataSource)<UITableViewDataSource>
+
+@end
+@implementation ResultViewController(AddTableViewDataSource)
+
+- (nonnull UITableViewCell *)tableView:(nonnull UITableView *)tableView cellForRowAtIndexPath:(nonnull NSIndexPath *)indexPath {
+    UITableViewCell* cell = [tableView dequeueReusableCellWithIdentifier:tableViewReusableCell forIndexPath:indexPath];
+    cell.textLabel.text = [self.arr objectAtIndex:indexPath.row];
+    return cell;
+}
+
+- (NSInteger)tableView:(nonnull UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    return [self.arr count];
+}
+
 @end

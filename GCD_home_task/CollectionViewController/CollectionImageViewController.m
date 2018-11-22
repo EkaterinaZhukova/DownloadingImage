@@ -10,6 +10,8 @@
 #import "Masonry.h"
 #import "CollectionViewCell.h"
 #import "ResultViewController.h"
+#import "HistoryManager.h"
+
 
 #define reuseId @"cellID"
 
@@ -17,13 +19,9 @@
 
 @interface UIImage(decompressImage)
 -(UIImage*)decompressedImage;
--(void)PrintSmth;
 @end
 
 @implementation UIImage(decompressImage)
-- (void)PrintSmth{
-    NSLog(@"Print smth");
-}
 -(UIImage*)decompressedImage{
     CGImageRef imageRef = self.CGImage;
     CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
@@ -56,8 +54,8 @@
 
 @interface CollectionImageViewController ()
 @property(nonatomic,retain) NSArray *urlArray;
-@property(nonatomic, retain)dispatch_queue_t queue;
-@property(nonatomic,retain)NSOperationQueue* operationQueue;
+@property(nonatomic, retain)dispatch_queue_global_t queue;
+@property(nonatomic,copy)NSOperationQueue* operationQueue;
 @end
 
 @implementation CollectionImageViewController
@@ -97,8 +95,9 @@
         make.right.equalTo(weakSelf.view.mas_right);
     }];
     
-    self.queue = dispatch_queue_create(".com.gcd.serial.queue", DISPATCH_QUEUE_SERIAL);
-    self.operationQueue = [NSOperationQueue new];
+    self.queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+    _operationQueue = [NSOperationQueue new];
+    //  [_operationQueue setMaxConcurrentOperationCount:1];
 }
 - (void) closeView{
     self.onCloseAction();
@@ -121,24 +120,35 @@
 
 
 - (nonnull __kindof UICollectionViewCell *)collectionView:(nonnull UICollectionView *)collectionView cellForItemAtIndexPath:(nonnull NSIndexPath *)indexPath {
-    [self.operationQueue cancelAllOperations];
+    __weak typeof(self)weakSelf = self;
+    NSString *index = [NSString stringWithFormat:@"%ld",indexPath.row];
+    
     CollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:reuseId forIndexPath:indexPath];
     cell.backgroundColor = UIColor.lightGrayColor;
-    __weak typeof(self)weakSelf = self;
+    [cell updateIndex:index];
+    cell.currentIndex = index;
+    [cell updateCurrentUrl:[NSURL URLWithString:self.urlArray[indexPath.row]]];
     
-    [self.operationQueue addOperationWithBlock:^{
-        __block NSData *data = nil;
-        dispatch_sync(self.queue, ^{
-            NSURL *url = [NSURL URLWithString: self.urlArray[indexPath.row]];
-            data = [weakSelf downloadURL:url];
-        });
-        __block UIImage* myImage = [UIImage imageWithData:data];
+    HistoryManager* manager = [HistoryManager shared];
+    __block NSData *data = nil;
+    
+    cell.block = [NSBlockOperation blockOperationWithBlock:^{
+        
+        NSString* str = [[NSString stringWithFormat:@"%@",[NSDate cuurentDateInFormat]] stringByAppendingString:@" begin configuration"];
+        if(manager.result[index] == NULL){
+            [manager.result setObject:[[NSMutableArray alloc]init] forKey:index];
+        }
+        [manager.result[index] addObject:str];
+        __block NSURL *url = [NSURL URLWithString: self.urlArray[indexPath.row]];
+        data = [weakSelf downloadURL:url];
+        UIImage* myImage = [UIImage imageWithData:data];
         [myImage decompressedImage];
         dispatch_async(dispatch_get_main_queue(), ^{
-            [cell updateView:myImage];
-            [cell updateIndex:[NSString stringWithFormat:@"%ld",(long)indexPath.row]];
+            [cell updateView:myImage :url];
+            
         });
     }];
+    [weakSelf.operationQueue addOperation:cell.block];
     return cell;
 }
 
@@ -153,7 +163,9 @@
     resultTableVC.onCloseAction = ^{
         [self.navigationController popViewControllerAnimated:YES];
     };
+    resultTableVC.index = [NSString stringWithFormat:@"%ld",indexPath.row];
     [self.navigationController pushViewController:resultTableVC animated:YES];
 }
+
 @end
 

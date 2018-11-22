@@ -8,21 +8,29 @@
 
 #import "CollectionViewCell.h"
 #import "Masonry.h"
+#import "HistoryManager.h"
 
 @interface CollectionViewCell()
 @property(nonatomic, retain) UIImageView *imageView;
 @property(nonatomic, retain) UILabel* loadingLabel;
 @property(nonatomic, retain) UILabel* indexLabel;
 @property(nonatomic, assign) UIImage* image;
+@property(nonatomic, assign) HistoryManager* manager;
 @end
+@implementation NSDate(MyOwnFormatterMethod)
 
++ (NSString *)cuurentDateInFormat{
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:@"HH:mm:ss"];
+    return [dateFormatter stringFromDate:[NSDate date]];
+}
+
+@end
 @implementation CollectionViewCell
 - (instancetype)initWithFrame:(CGRect)frame{
     self = [super initWithFrame:frame];
     if (self) {
         __weak typeof(self) weakSelf = self;
-
-        
         UILabel* labelIndex = [[UILabel alloc]init];
         labelIndex.text = @"index";
         labelIndex.textColor = UIColor.blackColor;
@@ -63,12 +71,18 @@
             make.width.equalTo(weakSelf.contentView.mas_width);
         }];
         
+        self.manager = [HistoryManager shared];
         NSLog(@"init cell");
     }
     return self;
 }
--(void) updateView:(UIImage*)newImage{
+-(void) updateView:(UIImage*)newImage :(NSURL*)url{
+    if([url isEqual:self.currentURL] == NO){
+        [self.manager.result[self.currentIndex] addObject:[[NSString stringWithFormat:@"%@",[NSDate cuurentDateInFormat]] stringByAppendingString:@" without downloading"]];
+        return;
+    }
     self.imageView.image = newImage;
+    [self.manager.result[self.currentIndex] addObject:[[NSString stringWithFormat:@"%@",[NSDate cuurentDateInFormat]] stringByAppendingString:@" downloaded and image displayed"]];
 }
 -(void)updateIndex:(NSString*)currentIndex{
     self.indexLabel.text = currentIndex;
@@ -78,7 +92,18 @@
     NSLog(@"Cell dealloced");
 }
 - (void)prepareForReuse{
+   
+    if(self.block != NULL){
+        [self.block cancel];
+        [self.manager.result[self.currentIndex] addObject:[[NSString stringWithFormat:@"%@",[NSDate cuurentDateInFormat]] stringByAppendingString:@" without downloading"]];
+    }
     self.imageView.image = NULL;
     self.indexLabel.text = @"index";
+}
+-(BOOL)isImageSetUp{
+    return self.imageView.image != NULL;
+}
+-(void)updateCurrentUrl:(NSURL*)newUrl{
+    self.currentURL = newUrl;
 }
 @end

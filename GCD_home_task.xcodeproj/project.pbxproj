@@ -17,6 +17,7 @@
 		C43FBB5F21A2F29F00F84EB6 /* CollectionImageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C43FBB5E21A2F29F00F84EB6 /* CollectionImageViewController.m */; };
 		C43FBB6221A3068900F84EB6 /* CollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C43FBB6121A3068900F84EB6 /* CollectionViewCell.m */; };
 		C49A468E21A582BF00E74876 /* ResultViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C49A468D21A582BF00E74876 /* ResultViewController.m */; };
+		C4DDD2E721A5F59300F4C4DA /* HistoryManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C4DDD2E621A5F59300F4C4DA /* HistoryManager.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -39,6 +40,8 @@
 		C43FBB6121A3068900F84EB6 /* CollectionViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CollectionViewCell.m; sourceTree = "<group>"; };
 		C49A468C21A582BF00E74876 /* ResultViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ResultViewController.h; sourceTree = "<group>"; };
 		C49A468D21A582BF00E74876 /* ResultViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ResultViewController.m; sourceTree = "<group>"; };
+		C4DDD2E521A5F59300F4C4DA /* HistoryManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HistoryManager.h; sourceTree = "<group>"; };
+		C4DDD2E621A5F59300F4C4DA /* HistoryManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HistoryManager.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -83,23 +86,65 @@
 		C43FBB4321A2DF0300F84EB6 /* GCD_home_task */ = {
 			isa = PBXGroup;
 			children = (
+				C4DDD2EC21A60DBE00F4C4DA /* HistoryManager */,
+				C4DDD2EB21A60DA000F4C4DA /* ResultTableViewController */,
+				C4DDD2E921A60D7900F4C4DA /* CollectionViewController */,
+				C4DDD2E821A60D6200F4C4DA /* MainViewController */,
 				C43FBB4421A2DF0300F84EB6 /* AppDelegate.h */,
 				C43FBB4521A2DF0300F84EB6 /* AppDelegate.m */,
-				C43FBB4721A2DF0300F84EB6 /* ViewController.h */,
-				C43FBB4821A2DF0300F84EB6 /* ViewController.m */,
 				C43FBB4A21A2DF0300F84EB6 /* Main.storyboard */,
 				C43FBB4D21A2DF0400F84EB6 /* Assets.xcassets */,
 				C43FBB4F21A2DF0400F84EB6 /* LaunchScreen.storyboard */,
 				C43FBB5221A2DF0400F84EB6 /* Info.plist */,
 				C43FBB5321A2DF0400F84EB6 /* main.m */,
+			);
+			path = GCD_home_task;
+			sourceTree = "<group>";
+		};
+		C4DDD2E821A60D6200F4C4DA /* MainViewController */ = {
+			isa = PBXGroup;
+			children = (
+				C43FBB4721A2DF0300F84EB6 /* ViewController.h */,
+				C43FBB4821A2DF0300F84EB6 /* ViewController.m */,
+			);
+			path = MainViewController;
+			sourceTree = "<group>";
+		};
+		C4DDD2E921A60D7900F4C4DA /* CollectionViewController */ = {
+			isa = PBXGroup;
+			children = (
+				C4DDD2EA21A60D9000F4C4DA /* CollectionCell */,
 				C43FBB5D21A2F29F00F84EB6 /* CollectionImageViewController.h */,
 				C43FBB5E21A2F29F00F84EB6 /* CollectionImageViewController.m */,
+			);
+			path = CollectionViewController;
+			sourceTree = "<group>";
+		};
+		C4DDD2EA21A60D9000F4C4DA /* CollectionCell */ = {
+			isa = PBXGroup;
+			children = (
 				C43FBB6021A3068900F84EB6 /* CollectionViewCell.h */,
 				C43FBB6121A3068900F84EB6 /* CollectionViewCell.m */,
+			);
+			path = CollectionCell;
+			sourceTree = "<group>";
+		};
+		C4DDD2EB21A60DA000F4C4DA /* ResultTableViewController */ = {
+			isa = PBXGroup;
+			children = (
 				C49A468C21A582BF00E74876 /* ResultViewController.h */,
 				C49A468D21A582BF00E74876 /* ResultViewController.m */,
 			);
-			path = GCD_home_task;
+			path = ResultTableViewController;
+			sourceTree = "<group>";
+		};
+		C4DDD2EC21A60DBE00F4C4DA /* HistoryManager */ = {
+			isa = PBXGroup;
+			children = (
+				C4DDD2E521A5F59300F4C4DA /* HistoryManager.h */,
+				C4DDD2E621A5F59300F4C4DA /* HistoryManager.m */,
+			);
+			path = HistoryManager;
 			sourceTree = "<group>";
 		};
 		DD9DCD13E3A75615F4669C6C /* Frameworks */ = {
@@ -208,6 +253,7 @@
 				C43FBB5421A2DF0400F84EB6 /* main.m in Sources */,
 				C43FBB4621A2DF0300F84EB6 /* AppDelegate.m in Sources */,
 				C49A468E21A582BF00E74876 /* ResultViewController.m in Sources */,
+				C4DDD2E721A5F59300F4C4DA /* HistoryManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
