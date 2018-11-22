@@ -64,6 +64,7 @@
 
 - (nonnull UITableViewCell *)tableView:(nonnull UITableView *)tableView cellForRowAtIndexPath:(nonnull NSIndexPath *)indexPath {
     UITableViewCell* cell = [tableView dequeueReusableCellWithIdentifier:tableViewReusableCell forIndexPath:indexPath];
+    cell.textLabel.adjustsFontSizeToFitWidth = YES;
     cell.textLabel.text = [self.arr objectAtIndex:indexPath.row];
     return cell;
 }

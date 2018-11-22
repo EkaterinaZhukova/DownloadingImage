@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		4F45642ED4B0B77ED19D71FB /* libPods-GCD_home_task.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AA20272DDF2D9C14AA016451 /* libPods-GCD_home_task.a */; };
+		C411E3E221A6FA0F0093EC8B /* StateConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = C411E3E121A6FA0F0093EC8B /* StateConstants.m */; };
 		C43FBB4621A2DF0300F84EB6 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = C43FBB4521A2DF0300F84EB6 /* AppDelegate.m */; };
 		C43FBB4921A2DF0300F84EB6 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C43FBB4821A2DF0300F84EB6 /* ViewController.m */; };
 		C43FBB4C21A2DF0300F84EB6 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C43FBB4A21A2DF0300F84EB6 /* Main.storyboard */; };
@@ -24,6 +25,8 @@
 		16D53A0432B3C6F8BE76070A /* Pods-GCD_home_task.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GCD_home_task.debug.xcconfig"; path = "Pods/Target Support Files/Pods-GCD_home_task/Pods-GCD_home_task.debug.xcconfig"; sourceTree = "<group>"; };
 		5BCFC4CD9F11A59ED1570291 /* Pods-GCD_home_task.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GCD_home_task.release.xcconfig"; path = "Pods/Target Support Files/Pods-GCD_home_task/Pods-GCD_home_task.release.xcconfig"; sourceTree = "<group>"; };
 		AA20272DDF2D9C14AA016451 /* libPods-GCD_home_task.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-GCD_home_task.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		C411E3E021A6FA0F0093EC8B /* StateConstants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = StateConstants.h; sourceTree = "<group>"; };
+		C411E3E121A6FA0F0093EC8B /* StateConstants.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = StateConstants.m; sourceTree = "<group>"; };
 		C43FBB4121A2DF0300F84EB6 /* GCD_home_task.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GCD_home_task.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C43FBB4421A2DF0300F84EB6 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		C43FBB4521A2DF0300F84EB6 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -65,6 +68,15 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
+		C411E3E321A6FC1C0093EC8B /* Data */ = {
+			isa = PBXGroup;
+			children = (
+				C411E3E021A6FA0F0093EC8B /* StateConstants.h */,
+				C411E3E121A6FA0F0093EC8B /* StateConstants.m */,
+			);
+			path = Data;
+			sourceTree = "<group>";
+		};
 		C43FBB3821A2DF0300F84EB6 = {
 			isa = PBXGroup;
 			children = (
@@ -86,6 +98,7 @@
 		C43FBB4321A2DF0300F84EB6 /* GCD_home_task */ = {
 			isa = PBXGroup;
 			children = (
+				C411E3E321A6FC1C0093EC8B /* Data */,
 				C4DDD2EC21A60DBE00F4C4DA /* HistoryManager */,
 				C4DDD2EB21A60DA000F4C4DA /* ResultTableViewController */,
 				C4DDD2E921A60D7900F4C4DA /* CollectionViewController */,
@@ -248,6 +261,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C43FBB5F21A2F29F00F84EB6 /* CollectionImageViewController.m in Sources */,
+				C411E3E221A6FA0F0093EC8B /* StateConstants.m in Sources */,
 				C43FBB6221A3068900F84EB6 /* CollectionViewCell.m in Sources */,
 				C43FBB4921A2DF0300F84EB6 /* ViewController.m in Sources */,
 				C43FBB5421A2DF0400F84EB6 /* main.m in Sources */,

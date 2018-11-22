@@ -9,6 +9,8 @@
 #import "CollectionViewCell.h"
 #import "Masonry.h"
 #import "HistoryManager.h"
+#import "StateConstants.h"
+
 
 @interface CollectionViewCell()
 @property(nonatomic, retain) UIImageView *imageView;
@@ -78,11 +80,11 @@
 }
 -(void) updateView:(UIImage*)newImage :(NSURL*)url{
     if([url isEqual:self.currentURL] == NO){
-        [self.manager.result[self.currentIndex] addObject:[[NSString stringWithFormat:@"%@",[NSDate cuurentDateInFormat]] stringByAppendingString:@" without downloading"]];
+        [self.manager.result[self.currentIndex] addObject:[[NSString stringWithFormat:@"%@",[NSDate cuurentDateInFormat]] stringByAppendingString:[StateConstants downloadedAndNotDisplayed]]];
         return;
     }
     self.imageView.image = newImage;
-    [self.manager.result[self.currentIndex] addObject:[[NSString stringWithFormat:@"%@",[NSDate cuurentDateInFormat]] stringByAppendingString:@" downloaded and image displayed"]];
+    [self.manager.result[self.currentIndex] addObject:[[NSString stringWithFormat:@"%@",[NSDate cuurentDateInFormat]] stringByAppendingString:[StateConstants downloadedAndDisplayed]]];
 }
 -(void)updateIndex:(NSString*)currentIndex{
     self.indexLabel.text = currentIndex;
@@ -95,7 +97,7 @@
    
     if(self.block != NULL){
         [self.block cancel];
-        [self.manager.result[self.currentIndex] addObject:[[NSString stringWithFormat:@"%@",[NSDate cuurentDateInFormat]] stringByAppendingString:@" without downloading"]];
+        [self.manager.result[self.currentIndex] addObject:[[NSString stringWithFormat:@"%@",[NSDate cuurentDateInFormat]] stringByAppendingString:[StateConstants withoutDownloading]]];
     }
     self.imageView.image = NULL;
     self.indexLabel.text = @"index";
