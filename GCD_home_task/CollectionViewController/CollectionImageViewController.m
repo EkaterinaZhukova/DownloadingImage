@@ -101,8 +101,7 @@
 - (void) closeView{
     self.onCloseAction();
 }
-- (void)dealloc
-{
+- (void)dealloc{
     NSLog(@"Dealloc collectionVIew");
 }
 -(NSData* )downloadURL: (NSURL* )url{
@@ -124,26 +123,31 @@
     
     CollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:reuseId forIndexPath:indexPath];
     cell.backgroundColor = UIColor.lightGrayColor;
-    [cell updateIndex:index];
-    cell.currentIndex = index;
+    [cell updateIndex:indexPath.row];
+    cell.currentIndex = indexPath.row;
     [cell updateCurrentUrl:[NSURL URLWithString:self.urlArray[indexPath.row]]];
-    
     HistoryManager* manager = [HistoryManager shared];
+
+    cell.stateChanged = ^(NSString * newState,NSInteger index) {
+        [manager writeToResultDictionary:newState :index];
+    };
     __block NSData *data = nil;
+    __weak typeof(cell) weakCell = cell;
     cell.block = [NSBlockOperation blockOperationWithBlock:^{
-        
-        NSString* str = [[NSString stringWithFormat:@"%@",[NSDate cuurentDateInFormat]] stringByAppendingString:[StateConstants beginConfiguration]];
-        if(manager.result[index] == NULL){
-            [manager.result setObject:[[NSMutableArray alloc]init] forKey:index];
-        }
-        [manager.result[index] addObject:str];
+        [manager writeToResultDictionary:[StateConstants beginConfiguration] :indexPath.row];
         NSURL *url = [NSURL URLWithString: self.urlArray[indexPath.row]];
         data = [weakSelf downloadURL:url];
         UIImage* myImage = [UIImage imageWithData:data];
         [myImage decompressedImage];
+        if(weakCell.currentIndex == indexPath.row){
         dispatch_async(dispatch_get_main_queue(), ^{
-            [cell updateView:myImage :url];
+            [weakCell updateView:myImage :indexPath.row];
+            [manager writeToResultDictionary:[StateConstants downloadedAndDisplayed] :weakCell.currentIndex];
         });
+        }
+        else{
+            [manager writeToResultDictionary:[StateConstants downloadedAndNotDisplayed] :weakCell.currentIndex];
+        }
     }];
     [weakSelf.operationQueue addOperation:cell.block];
     return cell;

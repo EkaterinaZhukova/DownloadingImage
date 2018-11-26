@@ -43,8 +43,7 @@
     [self.navigationController pushViewController:toPresentVC animated:YES];
     
 }
-- (void)dealloc
-{
+- (void)dealloc{
     NSLog(@"Dealloc VIewController");
 }
 

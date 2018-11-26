@@ -19,6 +19,8 @@
 @property(nonatomic, assign) UIImage* image;
 @property(nonatomic, assign) HistoryManager* manager;
 @end
+
+
 @implementation NSDate(MyOwnFormatterMethod)
 
 + (NSString *)cuurentDateInFormat{
@@ -78,26 +80,20 @@
     }
     return self;
 }
--(void) updateView:(UIImage*)newImage :(NSURL*)url{
-    if([url isEqual:self.currentURL] == NO){
-        [self.manager.result[self.currentIndex] addObject:[[NSString stringWithFormat:@"%@",[NSDate cuurentDateInFormat]] stringByAppendingString:[StateConstants downloadedAndNotDisplayed]]];
-        return;
-    }
+-(void) updateView:(UIImage*)newImage :(NSInteger)currentIndex{
     self.imageView.image = newImage;
-    [self.manager.result[self.currentIndex] addObject:[[NSString stringWithFormat:@"%@",[NSDate cuurentDateInFormat]] stringByAppendingString:[StateConstants downloadedAndDisplayed]]];
 }
--(void)updateIndex:(NSString*)currentIndex{
-    self.indexLabel.text = currentIndex;
+-(void)updateIndex:(NSInteger)currentIndex{
+    self.indexLabel.text = [NSString stringWithFormat:@"%ld",(long)currentIndex];
 }
-- (void)dealloc
-{
+- (void)dealloc{
     NSLog(@"Cell dealloced");
 }
 - (void)prepareForReuse{
    
     if(self.block != NULL){
         [self.block cancel];
-        [self.manager.result[self.currentIndex] addObject:[[NSString stringWithFormat:@"%@",[NSDate cuurentDateInFormat]] stringByAppendingString:[StateConstants withoutDownloading]]];
+        self.stateChanged([StateConstants withoutDownloading], self.currentIndex);
     }
     self.imageView.image = NULL;
     self.indexLabel.text = @"index";

@@ -13,13 +13,13 @@ NS_ASSUME_NONNULL_BEGIN
 +(NSDate*)cuurentDateInFormat;
 @end
 @interface CollectionViewCell : UICollectionViewCell
-@property(nonatomic, assign) NSString* currentIndex;
+@property(nonatomic, assign) NSInteger currentIndex;
 @property(nonatomic, strong) NSURL* currentURL;
 @property(nonatomic, weak)NSBlockOperation* block;
+@property (nonatomic, copy) void (^stateChanged)(NSString*,NSInteger);
 
-
--(void) updateView:(UIImage*)newImage :(NSURL*)url;
--(void)updateIndex:(NSString*)currentIndex;
+-(void) updateView:(UIImage*)newImage :(NSInteger)currentIndex;
+-(void)updateIndex:(NSInteger)currentIndex;
 -(BOOL)isImageSetUp;
 -(void)updateCurrentUrl:(NSURL*)newUrl;
 @end
