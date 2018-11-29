@@ -11,7 +11,7 @@
 #import "HistoryManager.h"
 #define tableViewReusableCell @"tableViewCell"
 @interface ResultViewController ()
-@property(nonatomic,assign)NSArray* arr;
+@property(nonatomic,strong)NSArray* arr;
 @end
 
 @implementation ResultViewController
@@ -20,8 +20,10 @@
     [super viewDidLoad];
     __weak typeof(self)weakSelf = self;
     HistoryManager* manager = HistoryManager.shared;
-    self.arr = [manager getArrayForKey:self.index];
-    
+    self.arr = [[NSArray alloc]init];
+    [manager getArrayForKey:^(NSArray * arrForKey) {
+        weakSelf.arr = arrForKey;
+    } :weakSelf.index];
     [self.view setBackgroundColor:UIColor.whiteColor];
     
     UIButton *closeButton = [UIButton buttonWithType:UIButtonTypeCustom];

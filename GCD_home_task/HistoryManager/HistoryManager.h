@@ -13,8 +13,8 @@ NS_ASSUME_NONNULL_BEGIN
 @interface HistoryManager : NSObject
 +(instancetype)shared;
 -(void) writeToResultDictionary :(NSString*)state :(NSInteger)currentIndex;
--(NSDictionary* )getDictionary;
--(NSArray*)getArrayForKey :(NSString*)key;
+-(void)getDictionary:(void(^)(NSDictionary*))completion;
+-(void)getArrayForKey :(void(^)(NSArray*))completion :(NSString*) index;
 @end
 
 NS_ASSUME_NONNULL_END

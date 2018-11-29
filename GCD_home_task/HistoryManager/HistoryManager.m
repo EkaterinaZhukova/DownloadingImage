@@ -12,7 +12,6 @@
 
 @property(nonatomic,strong)NSMutableDictionary* result;
 @property(nonatomic,retain)dispatch_queue_t queue;
-@property(nonatomic,strong)NSLock* lock;
 
 @end
 @implementation HistoryManager
@@ -22,8 +21,7 @@
     dispatch_once(&onceToken, ^{
         history = [HistoryManager new];
         history.result = [NSMutableDictionary new];
-        //history.queue = dispatch_queue_create(".serial.shared.history.manager", DISPATCH_QUEUE_SERIAL);
-        history.queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+        history.queue = dispatch_queue_create(".serial.shared.history.manager", DISPATCH_QUEUE_SERIAL);
     });
     return history;
 }
@@ -32,33 +30,33 @@
     HistoryManager* current = [HistoryManager shared];
     __weak typeof(current) weakCurrent = current;
     dispatch_async(current.queue, ^{
-        dispatch_sync(weakCurrent.queue, ^{
-            NSString *index = [NSString stringWithFormat:@"%ld",currentIndex];
-            NSString* str = [[NSString stringWithFormat:@"%@",[NSDate cuurentDateInFormat]] stringByAppendingString:state];
-            [weakCurrent.lock lock];
-            if(weakCurrent.result[index] == NULL){
-                [weakCurrent.result setObject:[[NSMutableArray alloc]init] forKey:index];
-            }
-            [weakCurrent.result[index] addObject:str];
-            [weakCurrent.lock unlock];
-        });
+        NSString *index = [NSString stringWithFormat:@"%ld",currentIndex];
+        NSString* str = [[NSString stringWithFormat:@"%@",[NSDate cuurentDateInFormat]] stringByAppendingString:state];
+        if(weakCurrent.result[index] == NULL){
+            [weakCurrent.result setObject:[[NSMutableArray alloc]init] forKey:index];
+        }
+        [weakCurrent.result[index] addObject:str];
+        NSLog(@"second isMainThread = %i", [NSThread isMainThread]);
     });
 }
 
-- (NSDictionary *)getDictionary{
+- (void)getDictionary:(void(^)(NSDictionary*))completion{
     HistoryManager* current = [HistoryManager shared];
-    NSDictionary* resultDistionatr;
-    [current.lock lock];
-    resultDistionatr = current.result;
-    [current.lock unlock];
-    return resultDistionatr;
+    __weak typeof(current) weakCurrent = current;
+    dispatch_async(weakCurrent.queue, ^{
+        if(completion){
+            completion([weakCurrent.result copy]);
+        }
+    });
 }
--(NSArray*)getArrayForKey :(NSString*)key{
-    NSArray* resultArray;
+
+-(void)getArrayForKey :(void(^)(NSArray*))completion :(NSString*) index{
     HistoryManager* current = [HistoryManager shared];
-    [current.lock lock];
-    resultArray = current.result[key];
-    [current.lock unlock];
-    return resultArray;
+    __weak typeof(current) weakCurrent = current;
+    dispatch_async(current.queue, ^{
+        if(completion){
+            completion([weakCurrent.result[index] copy]);
+        }
+    });
 }
 @end
