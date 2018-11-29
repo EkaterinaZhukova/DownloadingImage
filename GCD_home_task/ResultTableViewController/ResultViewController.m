@@ -20,7 +20,7 @@
     [super viewDidLoad];
     __weak typeof(self)weakSelf = self;
     HistoryManager* manager = HistoryManager.shared;
-    self.arr = manager.result[self.index];
+    self.arr = [manager getArrayForKey:self.index];
     
     [self.view setBackgroundColor:UIColor.whiteColor];
     
